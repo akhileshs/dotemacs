@@ -330,6 +330,23 @@ Version 2016-06-15"
 	(progn
 		(tabbar-mode 1)))
 
+(defun remove-scratch ()
+	(if (get-buffer "*scratch*")
+			(kill-buffer "*scratch*")))
+(add-hook 'after-change-major-mode-hook 'remove-scratch)
+
+(setq-default message-log-max nil)
+(kill-buffer "*Messages*")
+
+(add-hook 'minibuffer-exit-hook
+					'(lambda ()
+						 (let ((buffer "*Completions*"))
+							 (and (get-buffer buffer)
+										(kill-buffer buffer)))))
+
+(setq inhibit-startup-buffer-menu t)
+(add-hook 'window-setup-hook 'delete-other-windows)
+
 ;; (load "~/.emacs.d/elpa/idle-highlight-mode/idle-highlight-mode")
 ;; (idle-highlight-mode 1)
 
